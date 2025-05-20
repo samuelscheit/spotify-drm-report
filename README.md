@@ -6,10 +6,9 @@ This vulnerability was reported to Spotify both in January 2020 (by another rese
 
 After exhausting all responsible disclosure options, I feel it’s necessary to make this information public in the hope that it will finally prompt Spotify to take action and implement proper security measures.
 
-## Demo
+## [Demo](https://youtu.be/adMpsinuZvU)
 
-<video src="./out.mp4" width="640" height="360" controls muted="false">
-</video
+https://github.com/user-attachments/assets/c21064e6-c902-4de9-a0d9-e9df769f1708
 
 ## [Proof of concept](./src/examples/download.ts)
 
