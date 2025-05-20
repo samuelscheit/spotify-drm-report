@@ -28,7 +28,7 @@
 		"axios": "^1.6.0",
 		"fast-xml-parser": "^4.2.7",
 		"missing-native-js-functions": "^1.4.3",
-		"protobufjs": "^7.2.4",
+		"protobufjs": "^7.2.5",
 		"shannon": "^0.0.1",
 		"uuid": "^9.0.0"
 	}
