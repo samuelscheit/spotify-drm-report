@@ -45,6 +45,7 @@ export class APClient extends APNoise {
 
 	override onHandshakeComplete() {
 		super.onHandshakeComplete();
+		console.log("handshake complete. authenticating ...")
 		this.authenticate();
 	}
 

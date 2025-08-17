@@ -6,3 +6,6 @@ config*.json
 output
 dist
 out.mp3
+test.html
+.vscode
+playlist*

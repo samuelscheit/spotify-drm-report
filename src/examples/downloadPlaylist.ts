@@ -1,6 +1,7 @@
 import fs from "fs";
 import { SPClient } from "../SPClient";
-import { PlaylistWorker, SpotifyId, normalizePath } from "../Util";
+import { ListWorker, SpotifyId, normalizePath } from "../Util";
+import { dirname } from "path";
 
 async function main() {
 	const config = require("../../config.json");
@@ -13,18 +14,35 @@ async function main() {
 	await client.connect();
 	console.log("ready");
 
-	const playlistId = SpotifyId.from("spotify:playlist:4g423PZgeW6HCmHJlOUvc1");
-	const playlistPath = __dirname + "/../../playlist/";
-	fs.mkdirSync(playlistPath, { recursive: true });
+	const ids = [
+		"spotify:album:5H7ixXZfsNMGbIE5OBSpcb",
+	]
 
-	await PlaylistWorker({ client, playlistId, offset: 0, delay: 0, concurrency: 10 }, async (item) => {
-		console.log(item.name);
+	for (const id of ids) {
+		const playlistId = SpotifyId.from(id);
+		const playlistPath = __dirname + "/../../playlist/";
+		fs.mkdirSync(playlistPath, { recursive: true });
 
-		const id = SpotifyId.from(item.uri);
-		const { file, metadata, stream } = await client.fetchSong(id);
+		await ListWorker({ client, id: playlistId, offset: 0, delay: 30000, concurrency: 1 }, async (item, name) => {
+			const path = playlistPath + normalizePath(name) + "/" + normalizePath(item.name) + ".ogg"
+			const dir = dirname(path)
+			if (!fs.existsSync(dir)) {
+				fs.mkdirSync(dir, { recursive: true });
+			}
 
-		stream.pipe(fs.createWriteStream(playlistPath + normalizePath(metadata.name) + ".ogg"));
-	});
+			if (fs.existsSync(path)) {
+				return false
+			}
+
+			console.log("downloading", item.name);
+			const id = SpotifyId.from(item.uri);
+			const { file, metadata, stream } = await client.fetchSong(id, "ogg");
+
+			stream.pipe(fs.createWriteStream(path));
+		});
+
+	}
+
 
 	console.log("done");
 

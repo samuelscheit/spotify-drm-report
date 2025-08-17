@@ -5,6 +5,11 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
+			"type": "bun",
+			"name": "Launch Bun",
+			"program": "${file}"
+		},
+		{
 			"type": "node",
 			"request": "launch",
 			"name": "Launch Program",

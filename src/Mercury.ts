@@ -82,7 +82,7 @@ export class MercuryClient extends APClient {
 
 		const [payload] = response.body;
 		const data = JSON.parse(payload.toString()) as Token;
-		console.log("Fetching Access Token ...");
+		console.log("Fetched Access Token", data.accessToken);
 		this.access_token = data.accessToken;
 
 		return data.accessToken;

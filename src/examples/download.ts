@@ -13,7 +13,7 @@ async function main() {
 	await client.connect();
 	console.log("ready");
 
-	const playlistId = SpotifyId.from("spotify:track:4PTG3Z6ehGkBFwjybzWkR8");
+	const playlistId = SpotifyId.from("spotify:track:4QNpBfC0zvjKqPJcyqBy9W");
 	// https://open.spotify.com/track/2rTYgHxgcndkUrRoU7x0Sv?si=b60562ddd8744cad
 
 	const out = fs.createWriteStream(__dirname + "/../../out.ogg");

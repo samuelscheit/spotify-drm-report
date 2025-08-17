@@ -253,29 +253,38 @@ export function normalizePath(path: string) {
 	return path.replace(/[/\\?%*:|"<>]/g, "-").slice(0, 50);
 }
 
-export async function PlaylistWorker(
-	opts: { client: SPClient; playlistId: SpotifyId; delay?: number; concurrency?: number; offset?: number },
-	cb: (item: any) => Promise<any>
+export async function ListWorker(
+	opts: {
+		client: SPClient; id: SpotifyId; delay?: number; concurrency?: number; offset?: number,
+	},
+	cb: (item: any, name: string) => Promise<any>,
 ) {
 	var offset = opts.offset ?? 0;
 	const delay = opts.delay ?? 1000;
 	const concurrency = opts.concurrency ?? 1;
+	let name = "";
 
-	const q = queue(async (el: any) => {
+
+	async function work(el: any, tries = 1) {
 		try {
-			if (el.itemV2.data.playability.playable !== true) return;
-			await cb(el.itemV2.data);
+			if (el.playability?.playable !== true) return;
+			if (await cb(el, name) === false) return
+			await sleep(delay);
 		} catch (error) {
 			console.log("error", (error as any)?.message);
+			await sleep(delay * tries + 1000);
+			await work(el, tries + 1)
 		}
-		await sleep(delay);
-	}, concurrency);
+	}
+
+	const q = queue(async (el) => await work(el, 1), concurrency);
 
 	do {
-		var playlist = await opts.client.fetchPlaylist2(opts.playlistId, { offset });
+		var { tracks, name: newName } = await opts.client.fetchList2(opts.id, { offset, limit: 100 });
+		name = newName;
 
-		q.push(playlist.content.items);
-		offset += playlist.content.items.length;
+		q.push(tracks);
+		offset += tracks.length;
 		await q.drain();
-	} while (playlist.content.items.length > 0);
+	} while (tracks.length > 0);
 }
