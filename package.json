@@ -26,7 +26,7 @@
 		"async": "^3.2.4",
 		"async-mutex": "^0.4.0",
 		"axios": "^1.15.0",
-		"fast-xml-parser": "^5.5.7",
+		"fast-xml-parser": "^5.7.0",
 		"missing-native-js-functions": "^1.4.3",
 		"protobufjs": "^7.5.5",
 		"shannon": "^0.0.1",
