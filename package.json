@@ -30,6 +30,6 @@
 		"missing-native-js-functions": "^1.4.3",
 		"protobufjs": "^7.5.5",
 		"shannon": "^0.0.1",
-		"uuid": "^9.0.0"
+		"uuid": "^14.0.0"
 	}
 }
